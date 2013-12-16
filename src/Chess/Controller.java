@@ -359,7 +359,7 @@ public class Controller
 		}		
 		else
 		{
-			possibleMovesForPiece(dummyBlackKing, blackKingPosition);			
+			possibleMovesForPiece(dummyBlackKing, blackKingPosition);
 			kingPossibleMoves = dummyBlackKing.getPossibleMoves();
 		}
 		
@@ -440,17 +440,30 @@ public class Controller
 			}
 		}
 		
+		// goes in here if the king has no valid moves of its own to get out of check
 		if(!kingHasMoves)
 		{
-			for(int i = 0; i < allyTeam.size() && checkMate; i++)
+			System.out.println(checkMate + " WHAT IS CHECKMATE COMING IN?!");
+			for(int i = 0; i < allyTeam.size(); i++)
 			{
 				Piece allyPiece = allyTeam.get(i);
 				
-				for(int j = 0; j < allyPiece.getPossibleMoves().size(); j++)
+				if(whitePlayerTurn())
+				{
+					possibleMovesForPiece(allyPiece, team.getPiecePositionFromWhiteTeam(allyPiece));
+				}
+				else
+				{
+					possibleMovesForPiece(allyPiece, team.getPiecePositionFromBlackTeam(allyPiece));
+				}
+				
+				for(int j = 0; j < allyPiece.getPossibleMoves().size() && checkMate; j++)
 				{
 					if(whitePlayerTurn())
 					{
 						Position originalPiecePosition = team.getPiecePositionFromWhiteTeam(allyPiece);
+						possibleMovesForPiece(allyPiece, originalPiecePosition);
+						
 						Position ghostMovePosition = allyPiece.getPossibleMoves().get(j);
 						int ghostX = ghostMovePosition.getPositionX();
 						int ghostY = ghostMovePosition.getPositionY();
@@ -458,18 +471,20 @@ public class Controller
 						Piece testPieceSpot = board.getChessBoardSquare(ghostX, ghostY).getPiece();
 						Square testSquare = board.getChessBoardSquare(ghostX, ghostY);
 						
-						System.out.println("\n------------------------------------------------------------------------------------------- CHECK 1");
-						board.printBoard();
-						System.out.println("\n------------------------------------------------------------------------------------------- CHECK 2");
+//						System.out.println("\n------------------------------------------------------------------------------------------- CHECK 1 WHITE");
+//						board.printBoard();
+//						System.out.println("\n------------------------------------------------------------------------------------------- CHECK 2 WHITE");
 						
 						movePiece(allyPiece, originalPiecePosition, ghostMovePosition);
-						System.out.println(allyPiece.getPieceType() + " PIECE TYPE");
-						System.out.println(originalPiecePosition + " POSITION OF PIECE");
-						System.out.println(ghostMovePosition + " GHOST POSITION");
-						
-						System.out.println("\n------------------------------------------------------------------------------------------- CHECK 3");
-						board.printBoard();
-						System.out.println("\n------------------------------------------------------------------------------------------- CHECK 4");
+//						System.out.println(allyPiece.getPieceType() + " PIECE TYPE");
+//						System.out.println(originalPiecePosition + " POSITION OF PIECE");
+//						System.out.println(ghostMovePosition + " GHOST POSITION");
+//						System.out.println(allyPiece.getPossibleMoves());
+//						System.out.println(isKingInCheck(whiteKingPosition) + " WHITE STATUS");
+//						
+//						System.out.println("\n------------------------------------------------------------------------------------------- CHECK 3 WHITE");
+//						board.printBoard();
+//						System.out.println("\n------------------------------------------------------------------------------------------- CHECK 4 WHITE");
 						
 						if(isKingInCheck(whiteKingPosition))
 						{
@@ -487,7 +502,16 @@ public class Controller
 					}
 					else
 					{
+//						System.out.println("BLACK TEAM BLACK TEAM BLACK TEAM BLACK TEAM BLACK TEAM BLACK TEAM BLACK TEAM BLACK TEAM BLACK TEAM BLACK TEAM ");
+//						System.out.println(team.getBlackTeamSize() + " size of black team!");
+//						System.out.println(allyPiece.getPieceType() + " I AM THIS TYPE");
+//						System.out.println(allyPiece.getPieceColor() + " I SHOULD BE BLACK");
+//						System.out.println(team.getPiecePositionFromBlackTeam(allyPiece) + " THIS IS MY POSITION");
+//						System.out.println(allyPiece.getPossibleMoves() + " THESE ARE MY POSSIBLE MOVES");
+						
 						Position originalPiecePosition = team.getPiecePositionFromBlackTeam(allyPiece);
+						possibleMovesForPiece(allyPiece, originalPiecePosition);
+						
 						Position ghostMovePosition = allyPiece.getPossibleMoves().get(j);
 						
 						int ghostX = ghostMovePosition.getPositionX();
@@ -496,7 +520,20 @@ public class Controller
 						Piece testPieceSpot = board.getChessBoardSquare(ghostX, ghostY).getPiece();
 						Square testSquare = board.getChessBoardSquare(ghostX, ghostY);
 						
+						System.out.println("\n------------------------------------------------------------------------------------------- CHECK 1 BLACK");
+						board.printBoard();
+						System.out.println("\n------------------------------------------------------------------------------------------- CHECK 2 BLACK");
+						
 						movePiece(allyPiece, originalPiecePosition, ghostMovePosition);
+						System.out.println(allyPiece.getPieceType() + " PIECE TYPE");
+						System.out.println(originalPiecePosition + " POSITION OF PIECE");
+						System.out.println(ghostMovePosition + " GHOST POSITION");
+						System.out.println(allyPiece.getPossibleMoves());
+						System.out.println(isKingInCheck(blackKingPosition) + " BLACK STATUS!??!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!?!??!-----------------------?!?!?!?!??!?!?!?!?!??!?!?!?");
+						
+						System.out.println("\n------------------------------------------------------------------------------------------- CHECK 3 BLACK");
+						board.printBoard();
+						System.out.println("\n------------------------------------------------------------------------------------------- CHECK 4 BLACK");
 						
 						if(isKingInCheck(blackKingPosition))
 						{
@@ -549,7 +586,7 @@ public class Controller
 	}
 
 	private void possibleMovesForPiece(Piece piece, Position positionCheck)
-	{		
+	{	
 		piece.resetPossibleMoves();
 		int x1 = positionCheck.getPositionX();
 		int y1 = positionCheck.getPositionY();
@@ -683,7 +720,7 @@ public class Controller
 		// PAWN
 		else if(pieceType.equals("p"))
 		{
-			if(whitePlayerTurn())
+			if(piece.getPieceColor().equals(white))
 			{
 				whitePawnPossibleMove(piece, positionCheck);
 			}
@@ -1506,21 +1543,22 @@ public class Controller
 		int x1 = position.getPositionX();
 		int y1 = position.getPositionY();
 		
-		boolean pieceNotFound = true;
+		boolean pieceFound = false;
 		
 		// checks the 2 spots above it because it hasn't moved yet
-		if(!piece.hasMoved)
+		if(y1 == 1)
 		{
-			for (int i = 2; pieceNotFound && (i <= 3) && (board.getChessBoardSquare(x1, i).getPiece().getPieceColor() != piece.getPieceColor()); i++)
+			for (int i = y1+1; !pieceFound && (i <= 3); i++)
 			{
 				if (board.getChessBoardSquare(x1, i).getPiece().getPieceType() != board.getBlankPiece().getPieceType())
 				{
-					pieceNotFound = false;
+					pieceFound = true;
 				}
 				else
 				{
 					Position newMove = new Position(x1, i);
 					piece.setPossibleMoves(newMove);
+					pieceFound = false;
 				}
 			}
 		}
@@ -1559,21 +1597,22 @@ public class Controller
 		int x1 = position.getPositionX();
 		int y1 = position.getPositionY();
 		
-		boolean pieceNotFound = true;
+		boolean pieceFound = false;
 		
 		// checks the 2 spots above it because it hasn't moved yet
-		if(!piece.hasMoved)
+		if(y1 == 6)
 		{
-			for (int i = 6; pieceNotFound && (i <= 4) && (board.getChessBoardSquare(x1, i).getPiece().getPieceColor() != piece.getPieceColor()); i--)
+			for (int i = y1-1; !pieceFound && (i >= 4); i--)
 			{
 				if (board.getChessBoardSquare(x1, i).getPiece().getPieceType() != board.getBlankPiece().getPieceType())
 				{
-					pieceNotFound = false;
+					pieceFound = true;
 				}
 				else
 				{
 					Position newMove = new Position(x1, i);
 					piece.setPossibleMoves(newMove);
+					pieceFound = false;
 				}
 			}
 		}

@@ -19,12 +19,13 @@ public class Pawn extends Piece
 		if( ((x2 == x1) && (y2 == y1 + PAWN_MOVEMENT_RESTRICTION)) && newSquare.getPiece().getPieceType() == "-")
 		{
 			move = true;
+			super.setHasMoved(true);
 		}
 		else if( ((x2 == x1 && (y1 == WHITE_PAWN_Y_STARTING_SPOT)) && (y2 == y1 + STARTING_PAWN_MOVEMENT_RESTRICTION) && !(super.hasMoved)
 				&& newSquare.getPiece().getPieceType() == "-"))
 		{
 			move = true;
-			super.hasMoved = true;
+			super.setHasMoved(true);
 		}
 		
 		return move;
@@ -37,12 +38,13 @@ public class Pawn extends Piece
 		if( ((x2 == x1) && (y2 == y1 - PAWN_MOVEMENT_RESTRICTION)) && newSquare.getPiece().getPieceType() == "-")
 		{
 			move = true;
+			super.setHasMoved(true);
 		}
 		else if( ((x2 == x1 && (y1 == BLACK_PAWN_Y_STARTING_SPOT)) && (y2 == y1 - STARTING_PAWN_MOVEMENT_RESTRICTION) && !(super.hasMoved)
 				&& newSquare.getPiece().getPieceType() == "-"))
 		{
 			move = true;
-			super.hasMoved = true;
+			super.setHasMoved(true);
 		}
 		
 		return move;

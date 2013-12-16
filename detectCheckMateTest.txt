@@ -30,8 +30,12 @@ kde8
 bdf8
 ndg8
 rdh8
-f2 f4
+a2 a4
 e7 e5
-g2 g4
-d8 h4
-a2 a3
+a1 a2
+d8 f6
+a2 a1
+f8 c5
+a1 a2
+f6 f2
+a2 a1
