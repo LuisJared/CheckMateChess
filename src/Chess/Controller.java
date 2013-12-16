@@ -9,7 +9,7 @@ public class Controller
 	private boolean whiteTurn;
 	private int totalTurns = 0;
 	private int pieceAddCount = 0;
-	private int pieceEndResult = 4;
+	private int pieceEndResult = 32;
 	private String white = "White";
 	private String black = "Black";
 	private int maxWidth = 8;
@@ -190,11 +190,17 @@ public class Controller
 				isBlackKingInCheck = false;
 			}
 		}
-
-		System.out.println("\nWhite king check status: " + isWhiteKingInCheck);
-		System.out.println("White king checkmate status: " + isWhiteKingInCheckMate);
-		System.out.println("Black king check status: " + isBlackKingInCheck);
-		System.out.println("Black king checkmate status: " + isBlackKingInCheckMate);
+		
+		if(whitePlayerTurn())
+		{
+			System.out.println("\nWhite king CHECK status: " + isWhiteKingInCheck);
+			System.out.println("White king CHECKMATE status: " + isWhiteKingInCheckMate);
+		}
+		else
+		{
+			System.out.println("\nBlack king CHECK status: " + isBlackKingInCheck);
+			System.out.println("Black king CHECKMATE status: " + isBlackKingInCheckMate);
+		}
 		
 		if(board.getChessBoardSquare(x2, y2).getPiece().getPieceColor() != (piece.getPieceColor()))
 		{
@@ -242,6 +248,15 @@ public class Controller
 
 		board.setChessBoardSquare(new Square(new Piece("-"), startPosition), x1, y1);
 		board.getChessBoardSquare(x1, y1).getPiece().setPieceColor("-");
+	
+		if(piece.getPieceColor() == white)
+		{
+			team.setPiecePositionOnWhiteTeam(piece, endPosition);
+		}
+		else
+		{
+			team.setPiecePositionOnBlackTeam(piece, endPosition);
+		}
 		
 //		if(piece.getPieceType().equals("k"))
 //		{
@@ -435,7 +450,7 @@ public class Controller
 				{
 					if(whitePlayerTurn())
 					{
-						Position originalPiecePosition = team.getPieceFromWhiteTeam(allyPiece);
+						Position originalPiecePosition = team.getPiecePositionFromWhiteTeam(allyPiece);
 						Position ghostMovePosition = allyPiece.getPossibleMoves().get(j);
 						int ghostX = ghostMovePosition.getPositionX();
 						int ghostY = ghostMovePosition.getPositionY();
@@ -443,7 +458,18 @@ public class Controller
 						Piece testPieceSpot = board.getChessBoardSquare(ghostX, ghostY).getPiece();
 						Square testSquare = board.getChessBoardSquare(ghostX, ghostY);
 						
+						System.out.println("\n------------------------------------------------------------------------------------------- CHECK 1");
+						board.printBoard();
+						System.out.println("\n------------------------------------------------------------------------------------------- CHECK 2");
+						
 						movePiece(allyPiece, originalPiecePosition, ghostMovePosition);
+						System.out.println(allyPiece.getPieceType() + " PIECE TYPE");
+						System.out.println(originalPiecePosition + " POSITION OF PIECE");
+						System.out.println(ghostMovePosition + " GHOST POSITION");
+						
+						System.out.println("\n------------------------------------------------------------------------------------------- CHECK 3");
+						board.printBoard();
+						System.out.println("\n------------------------------------------------------------------------------------------- CHECK 4");
 						
 						if(isKingInCheck(whiteKingPosition))
 						{
@@ -461,7 +487,7 @@ public class Controller
 					}
 					else
 					{
-						Position originalPiecePosition = team.getPieceFromBlackTeam(allyPiece);
+						Position originalPiecePosition = team.getPiecePositionFromBlackTeam(allyPiece);
 						Position ghostMovePosition = allyPiece.getPossibleMoves().get(j);
 						
 						int ghostX = ghostMovePosition.getPositionX();

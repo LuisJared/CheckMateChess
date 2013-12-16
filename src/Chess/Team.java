@@ -9,18 +9,28 @@ public class Team
 	private Piece whiteKing;
 	private Piece blackKing;
 	
-	public Position getPieceFromWhiteTeam(Piece piece)
+	public Position getPiecePositionFromWhiteTeam(Piece piece)
 	{
 		Position piecePosition = whiteTeam.get(piece);
 		
 		return piecePosition;
 	}
+	public void setPiecePositionOnWhiteTeam(Piece piece, Position position)
+	{
+		whiteTeam.remove(piece);
+		whiteTeam.put(piece, position);
+	}
 	
-	public Position getPieceFromBlackTeam(Piece piece)
+	public Position getPiecePositionFromBlackTeam(Piece piece)
 	{
 		Position piecePosition = blackTeam.get(piece);
 		
 		return piecePosition;
+	}
+	public void setPiecePositionOnBlackTeam(Piece piece, Position position)
+	{
+		blackTeam.remove(piece);
+		blackTeam.put(piece, position);
 	}
 	
 	public void setWhiteKing(Piece whiteKing) 
